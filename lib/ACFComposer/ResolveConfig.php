@@ -15,15 +15,15 @@ class ResolveConfig
      */
     public static function forFieldGroup($config)
     {
-        $output = self::validateConfig($config, ['name', 'title', 'fields', 'location']);
+        $output = static::validateConfig($config, ['name', 'title', 'fields', 'location']);
         $keySuffix = $output['name'];
         $output['key'] = "group_{$keySuffix}";
         $output['fields'] = array_reduce($config['fields'], function ($carry, $fieldConfig) use ($keySuffix) {
-            $fields = self::forField($fieldConfig, [$keySuffix]);
-            self::pushSingleOrMultiple($carry, $fields);
+            $fields = static::forField($fieldConfig, [$keySuffix]);
+            static::pushSingleOrMultiple($carry, $fields);
             return $carry;
         }, []);
-        $output['location'] = array_map([self::class, 'mapLocation'], $output['location']);
+        $output['location'] = array_map([static::class, 'mapLocation'], $output['location']);
         return $output;
     }
 
@@ -36,7 +36,7 @@ class ResolveConfig
      */
     public static function forLocation($config)
     {
-        return self::validateConfig($config, ['param', 'operator', 'value']);
+        return static::validateConfig($config, ['param', 'operator', 'value']);
     }
 
     /**
@@ -49,7 +49,7 @@ class ResolveConfig
      */
     public static function forField($config, $parentKeys = [])
     {
-        return self::forEntity($config, ['name', 'label', 'type'], $parentKeys);
+        return static::forEntity($config, ['name', 'label', 'type'], $parentKeys);
     }
 
     /**
@@ -62,7 +62,7 @@ class ResolveConfig
      */
     public static function forLayout($config, $parentKeys = [])
     {
-        return self::forEntity($config, ['name', 'label'], $parentKeys);
+        return static::forEntity($config, ['name', 'label'], $parentKeys);
     }
 
 
@@ -84,7 +84,7 @@ class ResolveConfig
             if (isset($filterParts[1])) {
                 $prefix = $filterParts[1];
                 $config = apply_filters($filterParts[0], null, $prefix);
-                if (!self::isAssoc($config)) {
+                if (!static::isAssoc($config)) {
                     $config = array_map(function ($singleConfig) use ($prefix) {
                         $singleConfig['name'] = $prefix . '_' . $singleConfig['name'];
                         return $singleConfig;
@@ -102,16 +102,16 @@ class ResolveConfig
                 return [];
             }
         }
-        if (!self::isAssoc($config)) {
+        if (!static::isAssoc($config)) {
             return array_map(function ($singleConfig) use ($requiredAttributes, $parentKeys, $prefix) {
-                return self::forEntity($singleConfig, $requiredAttributes, $parentKeys, $prefix);
+                return static::forEntity($singleConfig, $requiredAttributes, $parentKeys, $prefix);
             }, $config);
         }
 
-        $output = self::validateConfig($config, $requiredAttributes);
+        $output = static::validateConfig($config, $requiredAttributes);
 
         $parentKeysIncludingPrefix = isset($prefix) ? array_merge($parentKeys, [$prefix]) : $parentKeys;
-        $output = self::forConditionalLogic($output, $parentKeysIncludingPrefix);
+        $output = static::forConditionalLogic($output, $parentKeysIncludingPrefix);
 
         array_push($parentKeys, $output['name']);
 
@@ -121,7 +121,7 @@ class ResolveConfig
         $output = apply_filters('ACFComposer/resolveEntity', $output);
         $output = apply_filters("ACFComposer/resolveEntity?name={$output['name']}", $output);
         $output = apply_filters("ACFComposer/resolveEntity?key={$output['key']}", $output);
-        $output = self::forNestedEntities($output, $parentKeys);
+        $output = static::forNestedEntities($output, $parentKeys);
         return $output;
     }
 
@@ -137,8 +137,8 @@ class ResolveConfig
     {
         if (array_key_exists('sub_fields', $config)) {
             $config['sub_fields'] = array_reduce($config['sub_fields'], function ($output, $subField) use ($parentKeys) {
-                $fields = self::forField($subField, $parentKeys);
-                if (!self::isAssoc($fields)) {
+                $fields = static::forField($subField, $parentKeys);
+                if (!static::isAssoc($fields)) {
                     foreach ($fields as $field) {
                         array_push($output, $field);
                     }
@@ -150,8 +150,8 @@ class ResolveConfig
         }
         if (array_key_exists('layouts', $config)) {
             $config['layouts'] = array_reduce($config['layouts'], function ($output, $layout) use ($parentKeys) {
-                $subLayouts = self::forLayout($layout, $parentKeys);
-                if (!self::isAssoc($subLayouts)) {
+                $subLayouts = static::forLayout($layout, $parentKeys);
+                if (!static::isAssoc($subLayouts)) {
                     foreach ($subLayouts as $subLayout) {
                         array_push($output, $subLayout);
                     }
@@ -199,7 +199,7 @@ class ResolveConfig
      */
     protected static function mapLocation($locationArray)
     {
-        return array_map([self::class, 'forLocation'], $locationArray);
+        return array_map([static::class, 'forLocation'], $locationArray);
     }
 
     /**
@@ -260,9 +260,9 @@ class ResolveConfig
      */
     protected static function pushSingleOrMultiple(array &$carry, array $fields)
     {
-        if (!self::isAssoc($fields)) {
+        if (!static::isAssoc($fields)) {
             foreach ($fields as $field) {
-                self::pushSingleOrMultiple($carry, $field);
+                static::pushSingleOrMultiple($carry, $field);
             }
         } else {
             array_push($carry, $fields);
