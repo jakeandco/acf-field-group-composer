@@ -191,7 +191,7 @@ $config = [
     [
       'acf_composer_extend' => 'MyProject/ACF/fields/wysiwyg',
       'name' => 'bio',
-      'label' => 'Bio'
+      'label' => 'Bio',
       'instructions' => 'Please enter a user bio',
     ]
   ],
