@@ -167,6 +167,56 @@ ACFComposer\ACFComposer::registerFieldGroup($config);
 
 Executing this code will add a field with the **name** `subtitle` to all posts. The **key** will be a combination of the field group name, all parent field names (if the field has parent fields), and the field's name itself. In this case, this is `field_group1_subtitle`.
 
+### Composing fields
+
+Similar to filtering, fields can also be extended by using a special `acf_composer_extend` key on the field group config.
+
+This allows you to make minor changes to a field - like changing the name & label, instructions, or default values - without needing to rewrite the entire field. Of note, however, is that this functionality should only be used on associative arrays like field group definitions & the like.
+
+For example:
+
+```php
+add_filter('MyProject/ACF/fields/wysiwyg', function ($field) {
+  return [
+    'label' => 'Content',
+    'name' => 'content',
+    'type' => 'wysiwyg'
+  ];
+});
+
+$config = [
+  'name' => 'group1',
+  'title' => 'My Group',
+  'fields' => [
+    [
+      'acf_composer_extend' => 'MyProject/ACF/fields/wysiwyg',
+      'name' => 'bio',
+      'label' => 'Bio'
+      'instructions' => 'Please enter a user bio',
+    ]
+  ],
+];
+
+ACFComposer\ACFComposer::registerFieldGroup($config);
+```
+
+Will output the resulting config
+
+```php
+$config = [
+  'name' => 'group1',
+  'title' => 'My Group',
+  'fields' => [
+    [
+      'type' => 'wysiwyg',
+      'name' => 'bio',
+      'label' => 'Bio',
+      'instructions' => 'Please enter a user bio'
+    ]
+  ],
+];
+```
+
 ### Filter arguments
 
 There is another caveat when working with reusable components in ACF. While the flexible content field from ACF Pro gives you everything you need for adding multiple components of the same type to one field group, this is not possible for regular field groups.
@@ -399,6 +449,11 @@ The main people in charge of this repo are:
 To contribute, please use GitHub [issues](https://github.com/flyntwp/acf-field-group-composer/issues). Pull requests are accepted. Please also take a moment to read the [Contributing Guidelines](https://github.com/flyntwp/guidelines/blob/master/CONTRIBUTING.md) and [Code of Conduct](https://github.com/flyntwp/guidelines/blob/master/CODE_OF_CONDUCT.md).
 
 If editing the README, please conform to the [standard-readme](https://github.com/RichardLitt/standard-readme) specification.
+
+## Run local tests
+```sh
+npm run test
+```
 
 ## License
 

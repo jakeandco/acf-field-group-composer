@@ -100,6 +100,39 @@ class ResolveConfigForFieldTest extends TestCase
         $this->assertEquals($someField, $output);
     }
 
+    public function testForFieldGetConfigFromFilterWithExtension()
+    {
+        $config = [
+            'acf_composer_extend' => 'ACFComposer/Fields/someField',
+            'name' => 'someExtendedField',
+            'label' => 'Some Extended Field',
+        ];
+        $expected_name = $config['name'];
+
+        $filter = 'ACFComposer/Fields/someField';
+        $someField = [
+            'name' => 'someField',
+            'label' => 'Some Field',
+            'type' => 'someType'
+        ];
+
+        $expectedConfig = [
+            'name' => $expected_name,
+            'label' => $config['label'],
+            'type' => $someField['type'],
+            'key' => "field_$expected_name",
+        ];
+
+        Filters\expectApplied($filter)
+            ->with(null)
+            ->once()
+            ->andReturn($someField);
+
+        $output = ResolveConfig::forField($config);
+
+        $this->assertEquals($expectedConfig, $output);
+    }
+
     public function testMultipleForFieldGetConfigFromFilterWithArgument()
     {
         $config = 'ACFComposer/Fields/someField#prefix';

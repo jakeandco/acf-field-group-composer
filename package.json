@@ -9,6 +9,7 @@
     "standard-version": "^4.0.0"
   },
   "scripts": {
+    "test": "vendor/bin/phpcs -s --standard=phpcs.ruleset.xml && vendor/bin/phpunit",
     "release": "standard-version",
     "releaseGithub": "conventional-github-releaser -p angular"
   }

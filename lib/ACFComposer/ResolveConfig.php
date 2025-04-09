@@ -107,6 +107,20 @@ class ResolveConfig
                 return static::forEntity($singleConfig, $requiredAttributes, $parentKeys, $prefix);
             }, $config);
         }
+        if (static::isAssoc($config) && key_exists('acf_composer_extend', $config)) {
+            $field_extends = $config['acf_composer_extend'];
+            unset($config['acf_composer_extend']);
+            $extended_entity = null;
+
+            if (is_string($field_extends)) {
+                $extended_entity = static::forEntity($field_extends, $requiredAttributes, $parentKeys, $prefix);
+                unset($extended_entity['key']);
+            }
+
+            if (static::isAssoc($extended_entity)) {
+                $config = array_merge([], $extended_entity, $config);
+            }
+        }
 
         $output = static::validateConfig($config, $requiredAttributes);
 
