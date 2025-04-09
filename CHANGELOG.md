@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.2.0"></a>
+# [1.2.0](https://github.com/jakeandco/acf-field-group-composer/compare/v1.1.0...v1.2.0) (2023-12-18)
+
+
+### Features
+
+* **resolveConfig:** allow fields to be extended with new `acf_composer_extend` key ([86989fa
+](https://github.com/jakeandco/acf-field-group-composer/commit/86989fa))
+
+
 <a name="1.1.0"></a>
 # [1.1.0](https://github.com/flyntwp/acf-field-group-composer/compare/v1.0.3...v1.1.0) (2023-12-18)
 
