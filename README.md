@@ -337,7 +337,7 @@ For example:
   ]
 }
 ```
-> Becuase keys are built using the snake case, naming your fields using snake case could lead to issues. If in this previous example hasContent was named has_content, there could be issues with constructing the keys.
+> Because keys are built using the snake case, naming your fields using snake case could lead to issues. If in this previous example hasContent was named has_content, there could be issues with constructing the keys.
 
 ## API
 
