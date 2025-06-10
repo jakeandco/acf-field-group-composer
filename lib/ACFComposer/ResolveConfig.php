@@ -3,6 +3,7 @@
 namespace ACFComposer;
 
 use Exception;
+use ACFComposer\Util;
 
 class ResolveConfig
 {
@@ -113,8 +114,7 @@ class ResolveConfig
             $extended_entity = null;
 
             if (is_string($field_extends)) {
-                $extended_entity = static::forEntity($field_extends, $requiredAttributes, $parentKeys, $prefix);
-                unset($extended_entity['key']);
+                $extended_entity = Util::remove_keys_recursive(static::forEntity($field_extends, $requiredAttributes, $parentKeys, $prefix));
             }
 
             if (static::isAssoc($extended_entity)) {
