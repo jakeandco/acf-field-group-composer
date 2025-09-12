@@ -12,5 +12,14 @@
  * @package         ACF_Field_Group_Composer
  */
 
-require_once __DIR__ . '/lib/ACFComposer/ResolveConfig.php';
-require_once __DIR__ . '/lib/ACFComposer/ACFComposer.php';
+// Use root autoloader to load ACFComposer classes
+if (!class_exists('ACFComposer\ACFComposer')) {
+    $autoloader = dirname(__DIR__, 4) . '/vendor/autoload.php';
+    if (file_exists($autoloader)) {
+        require_once $autoloader;
+    } else {
+        // Fallback to manual requires if root autoloader not found
+        require_once __DIR__ . '/lib/ACFComposer/ResolveConfig.php';
+        require_once __DIR__ . '/lib/ACFComposer/ACFComposer.php';
+    }
+}
