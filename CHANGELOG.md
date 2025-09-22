@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="1.3.1"></a>
+## [1.3.1](https://github.com/jakeandco/acf-field-group-composer/compare/v1.3.0...v1.3.1) (2025-09-22)
+
+
+
+<a name="1.3.0"></a>
+# 1.3.0 (2025-06-10)
+
+
+
 <a name="1.3.0"></a>
 # 1.3.0 (2025-06-10)
 
